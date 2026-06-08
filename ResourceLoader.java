@@ -1,17 +1,19 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.net.URL;
 
 public class ResourceLoader {
     public static BufferedImage loadImage(String path) {
         try {
-            BufferedImage image = ImageIO.read(ResourceLoader.class.getResource(path));
-            if (image == null) {
-                throw new RuntimeException("Image file not found: " + path);
+            URL url = ResourceLoader.class.getResource(path);
+            if (url == null) {
+                System.err.println("Ostrzeżenie: Nie znaleziono grafiki " + path + " - załadowano model zastępczy.");
+                return null;
             }
-            return image;
-        } catch (IOException | IllegalArgumentException e) {
-            throw new RuntimeException("Error loading image: " + path, e);
+            return ImageIO.read(url);
+        } catch (Exception e) {
+            System.err.println("Ostrzeżenie: Błąd ładowania grafiki " + path + " - załadowano model zastępczy.");
+            return null;
         }
     }
 }
