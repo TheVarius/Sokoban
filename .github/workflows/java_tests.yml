@@ -1,0 +1,24 @@
+name: Java Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Ustawienie Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          
+      - name: Kompilacja kodu
+        run: javac *.java
+        
+      - name: Kompilacja testów
+        run: javac -cp . tests/TestSokoban.java
+        
+      - name: Uruchomienie testów
+        run: java -cp .:tests TestSokoban
